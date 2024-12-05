@@ -40,15 +40,26 @@ window.addEventListener('DOMContentLoaded', function () {
 
 	//Timer
 	//const deadline = '2025-05-11';
-	const deadline = '2024-10-29';
+	// const deadline = '2024-10-29';
+	const deadline = '2024-12-06';
 
 	//Функция - разница между дедлайном и теекущием времени
 	function getTimeRemainig(endTime) {
+		let days, hours, minutes, seconds;
 		const t = Date.parse(endTime) - Date.parse(new Date()); // кол-во мс. потом превратить это в дни, минуты, сеукнды.
-		const days = Math.floor(t / (1000 * 60 * 60 * 24));
-		const hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-		const minutes = Math.floor((t / 1000 / 60) % 60);
-		const seconds = Math.floor((t / 1000) % 60);
+
+		if (t <= 0) {
+			//
+			days = 0;
+			hours = 0;
+			minutes = 0;
+			seconds = 0;
+		} else {
+			days = Math.floor(t / (1000 * 60 * 60 * 24));
+			hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+			minutes = Math.floor((t / 1000 / 60) % 60);
+			seconds = Math.floor((t / 1000) % 60);
+		}
 
 		return {
 			total: t,
