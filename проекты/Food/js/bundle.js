@@ -1,6 +1,50 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./js/modules/cards.js":
+/*!*****************************!*\
+  !*** ./js/modules/cards.js ***!
+  \*****************************/
+/***/ ((module) => {
+
+class menuCards {
+	constructor(srcImg, alt, title, descr, price, parent) {
+		this.srcImg = srcImg;
+		this.alt = alt;
+		this.title = title;
+		this.descr = descr;
+		this.price = price;
+		this.transfer = 27;
+		this.parent = document.querySelector(parent);
+		this.changeToUAH();
+	}
+	changeToUAH() {
+		this.price = this.price * this.transfer;
+	}
+	render() {
+		const elment = document.createElement('div');
+		elment.innerHTML = `
+            <div class="menu__item">
+                <img src="${this.srcImg}" alt="${this.alt}">
+                <h3 class="menu__item-subtitle">${this.title}"</h3>
+                <div class="menu__item-descr">${this.descr}</div>
+                <div class="menu__item-divider"></div>
+                <div class="menu__item-price">
+                    <div class="menu__item-cost">Цена:</div>
+                    <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+                </div>
+            </div>
+        `;
+		this.parent.append(elment);
+	}
+    
+}
+
+module.exports = menuCards;
+
+
+/***/ }),
+
 /***/ "./js/modules/modal.js":
 /*!*****************************!*\
   !*** ./js/modules/modal.js ***!
@@ -45,7 +89,7 @@ function modal() {
 			closeModal();
 		}
 	});
-	const moadlTimerId = setTimeout(openModal, 5000);
+	// const moadlTimerId = setTimeout(openModal, 5000);
 
 	// window.addEventListener
 	function showModalByScroll() {
@@ -125,7 +169,8 @@ function timer() {
 	//const deadline = '2025-05-11';
 	// const deadline = '2024-10-29';
 	// const deadline = '2024-12-06';
-	const deadline = '2024-12-16';
+	// const deadline = '2024-12-16';
+	const deadline = '2024-12-20';
 
 	//Функция - разница между дедлайном и теекущием времени
 	function getTimeRemainig(endTime) {
@@ -228,6 +273,7 @@ window.addEventListener('DOMContentLoaded', function () {
 	const tabs = __webpack_require__(/*! ./modules/tabs */ "./js/modules/tabs.js");
 	const timer = __webpack_require__(/*! ./modules/timer */ "./js/modules/timer.js");
 	const modal = __webpack_require__(/*! ./modules/modal */ "./js/modules/modal.js");
+	const cards = __webpack_require__(/*! ./modules/cards */ "./js/modules/cards.js");
 
 	//Timer
 
@@ -235,6 +281,62 @@ window.addEventListener('DOMContentLoaded', function () {
 	tabs();
 	timer();
 	modal();
+	// cards();
+	class MenuCards {
+		constructor(srcImg, alt, title, descr, price, parent) {
+			this.srcImg = srcImg;
+			this.alt = alt;
+			this.title = title;
+			this.descr = descr;
+			this.price = price;
+			this.transfer = 27;
+			this.parent = document.querySelector(parent);
+			this.changeToUAH();
+		}
+		changeToUAH() {
+			this.price = this.price * this.transfer;
+		}
+		render() {
+			const elment = document.createElement('div');
+			elment.innerHTML = `
+				<div class="menu__item">
+					<img src="${this.srcImg}" alt="${this.alt}">
+					<h3 class="menu__item-subtitle">${this.title}"</h3>
+					<div class="menu__item-descr">${this.descr}</div>
+					<div class="menu__item-divider"></div>
+					<div class="menu__item-price">
+						<div class="menu__item-cost">Цена:</div>
+						<div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+					</div>
+				</div>
+			`;
+			this.parent.append(elment);
+		}
+	}
+	new MenuCards(
+		'img/tabs/vegy.jpg',
+		'vegy',
+		'Меню "Фитнес"',
+		'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+		9,
+		'.menu .container'
+	).render();
+	new MenuCards(
+		'img/tabs/elite.jpg',
+		'elite',
+		'Меню “Премиум”',
+		'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+		14,
+		'.menu .container'
+	).render();
+	new MenuCards(
+		'img/tabs/post.jpg',
+		'post',
+		'Меню "Постное"',
+		'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+		21,
+		'.menu .container'
+	).render();
 });
 
 })();

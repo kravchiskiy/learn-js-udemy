@@ -36,7 +36,7 @@ function modal() {
 			closeModal();
 		}
 	});
-	const moadlTimerId = setTimeout(openModal, 5000);
+	// const moadlTimerId = setTimeout(openModal, 5000);
 
 	// window.addEventListener
 	function showModalByScroll() {
