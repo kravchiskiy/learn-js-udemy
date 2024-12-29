@@ -68,4 +68,59 @@ window.addEventListener('DOMContentLoaded', function () {
 		21,
 		'.menu .container'
 	).render();
+
+	//forms
+	const forms = document.querySelectorAll('form');
+	const message = {
+		loading: 'загрузка...',
+		success: 'Спасибо! скоро мы с вами свяжемся.',
+		failure: 'Сори...',
+	};
+	forms.forEach((item) => {
+		postData(item);
+	});
+	function postData(form) {
+		form.addEventListener('submit', (e) => {
+			e.preventDefault();
+			const statusMessage = document.createElement('div');
+			statusMessage.classList.add('status');
+			statusMessage.textContent = message.loading;
+			form.append(statusMessage);
+
+			const request = new XMLHttpRequest();
+			request.open('POST', 'server.php');
+
+			//как сдеелать так, чтобы все данные которые заполнил пользовватель в форме  получили в js b vjukb jnghfdbnm yf cthddth. самый порстой вариант чтобы такое епровернуть мы используем объект formData. нам нее всегда необходимо передать в объекте json.
+			//заввисит от сервера и беекендра
+
+			// request.setRequestHeader('Content-type', 'multipart/form-data');
+			request.setRequestHeader('Content-type', 'application/json');
+			//если мы отправляем json, то нам нужно переделать формДата в json. а точне просто перебрать формДата и поместить все это в новый объект.
+
+			//formData - помогает быстро сформировать данные с формы
+			const formData = new FormData(form);
+			const object = {};
+			formData.forEach((value, key) => {
+				object[key] = value;
+			});
+			const json = JSON.stringify(object);
+			//у инпутов должны быть обязательно указан аттрибут name, причем
+
+			// request.send(formData);
+			request.send(json);
+			request.addEventListener('load', () => {
+				if (request.status === 200) {
+					console.log(request.response);
+					statusMessage.textContent = message.success;
+					form.reset();
+					setTimeout(() => {
+						statusMessage.remove();
+					}, 2000);
+				} else {
+					console.log('что-то пошло не так');
+					statusMessage.textContent = message.failure;
+				}
+			});
+		});
+	}
 });
