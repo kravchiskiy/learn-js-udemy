@@ -1,13 +1,14 @@
 function modal() {
 	const modal = document.querySelector('.modal');
 	const modalTrigger = document.querySelectorAll('[data-modal]');
-	const modalCloseBtn = document.querySelector('[data-close]');
+	// const modalCloseBtn = document.querySelector('[data-close]');
+	//для того, чтобы закрытие кнопки отрабатывало даже на той кнопке, которая добавилась динамически, нам нужно использовать делегирование событий.
 	function openModal() {
 		modal.classList.add('show');
 		modal.classList.remove('hide');
 		// modal.classList.toggle('show');
 		document.body.style.overflow = 'hidden';
-		clearInterval(moadlTimerId);
+		// clearInterval(moadlTimerId);
 	}
 	function closeModal() {
 		modal.classList.add('hide');
@@ -22,11 +23,11 @@ function modal() {
 		});
 	});
 	// modalTrigger
-	modalCloseBtn.addEventListener('click', () => {
-		closeModal();
-	});
+	// modalCloseBtn.addEventListener('click', () => {
+	// 	closeModal();
+	// });
 	modal.addEventListener('click', (e) => {
-		if (e.target === modal) {
+		if (e.target === modal || e.target.getAttribute('data-close') == '') {
 			closeModal();
 		}
 	});

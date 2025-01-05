@@ -3,7 +3,7 @@ window.addEventListener('DOMContentLoaded', function () {
 	//tabs
 	const tabs = require('./modules/tabs');
 	const timer = require('./modules/timer');
-	const modal = require('./modules/modal');
+	// const modal = require('./modules/modal');
 	const cards = require('./modules/cards');
 
 	//Timer
@@ -11,7 +11,59 @@ window.addEventListener('DOMContentLoaded', function () {
 	//modal
 	tabs();
 	timer();
-	modal();
+	// modal();
+	const modal = document.querySelector('.modal');
+	const modalTrigger = document.querySelectorAll('[data-modal]');
+	// const modalCloseBtn = document.querySelector('[data-close]');
+	//для того, чтобы закрытие кнопки отрабатывало даже на той кнопке, которая добавилась динамически, нам нужно использовать делегирование событий.
+	function openModal() {
+		modal.classList.add('show');
+		modal.classList.remove('hide');
+		// modal.classList.toggle('show');
+		document.body.style.overflow = 'hidden';
+		// clearInterval(moadlTimerId);
+	}
+	function closeModal() {
+		modal.classList.add('hide');
+		modal.classList.remove('show');
+		// modal.classList.toggle('show');
+		document.body.style.overflow = '';
+	}
+
+	modalTrigger.forEach((btn) => {
+		btn.addEventListener('click', () => {
+			openModal();
+		});
+	});
+	// modalTrigger
+	// modalCloseBtn.addEventListener('click', () => {
+	// 	closeModal();
+	// });
+	modal.addEventListener('click', (e) => {
+		if (e.target === modal || e.target.getAttribute('data-close') == '') {
+			closeModal();
+		}
+	});
+
+	document.addEventListener('keydown', (e) => {
+		if (e.code === 'Escape' && modal.classList.contains('show')) {
+			closeModal();
+		}
+	});
+	// const moadlTimerId = setTimeout(openModal, 5000);
+
+	// window.addEventListener
+	function showModalByScroll() {
+		if (
+			window.pageYOffset + document.documentElement.clientHeight >=
+			document.documentElement.scrollHeight - 1
+		) {
+			openModal();
+			window.removeEventListener('scroll', showModalByScroll);
+		}
+	}
+	window.addEventListener('scroll', showModalByScroll);
+
 	// cards();
 	class MenuCards {
 		constructor(srcImg, alt, title, descr, price, parent) {
@@ -85,7 +137,8 @@ window.addEventListener('DOMContentLoaded', function () {
 			const statusMessage = document.createElement('div');
 			statusMessage.classList.add('status');
 			statusMessage.textContent = message.loading;
-			form.append(statusMessage);
+			// form.append(statusMessage);
+			form.insertAdjacentElement('afterend', statusMessage);
 
 			const request = new XMLHttpRequest();
 			request.open('POST', 'server.php');
@@ -111,16 +164,47 @@ window.addEventListener('DOMContentLoaded', function () {
 			request.addEventListener('load', () => {
 				if (request.status === 200) {
 					console.log(request.response);
-					statusMessage.textContent = message.success;
+					// statusMessage.textContent = message.success;
+					showThanksModal(message.success);
 					form.reset();
-					setTimeout(() => {
-						statusMessage.remove();
-					}, 2000);
+					// setTimeout(() => {
+					statusMessage.remove();
+					// }, 2000);
 				} else {
 					console.log('что-то пошло не так');
-					statusMessage.textContent = message.failure;
+					// statusMessage.textContent = message.failure;
+					showThanksModal(message.failure);
 				}
 			});
 		});
+	}
+
+	function showThanksModal(message) {
+		const prevModalDialog = document.querySelector('.modal__dialog');
+		prevModalDialog.classList.add('hide');
+
+		//теперь нужно открыть структуру modal и добавить show, и сформировать новую структуру внутри modal вручную.
+		openModal();
+		if (openModal()) {
+			console.log('true');
+		} else {
+			console.log('false');
+		}
+
+		const thanksModal = document.createElement('div');
+		thanksModal.classList.add('modal__dialog');
+		thanksModal.innerHTML = `
+		<div class="modal__content">
+			<div class="modal__close" data-close>&times;</div>
+			<div class="modal__title">${message}</div>
+		</div>
+		`;
+		document.querySelector('.modal').append(thanksModal);
+		setTimeout(() => {
+			thanksModal.remove();
+			prevModalDialog.classList.add('show');
+			prevModalDialog.classList.remove('hide');
+			closeModal();
+		}, 4000);
 	}
 });
