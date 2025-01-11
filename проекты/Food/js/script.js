@@ -1,3 +1,4 @@
+'use strict';
 //Скрипты будут выполняться только после загрузки dom.
 window.addEventListener('DOMContentLoaded', function () {
 	//tabs
