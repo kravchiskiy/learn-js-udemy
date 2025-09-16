@@ -3,7 +3,7 @@ function timer() {
 	// const deadline = '2024-10-29';
 	// const deadline = '2024-12-06';
 	// const deadline = '2024-12-16';
-	const deadline = '2024-12-20';
+	const deadline = '2025-08-20';
 
 	//Функция - разница между дедлайном и теекущием времени
 	function getTimeRemainig(endTime) {
